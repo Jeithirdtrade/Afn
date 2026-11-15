@@ -6,8 +6,12 @@
 <meta name="keywords" content="Afan, Afan JTL Zanzibar, biashara Zanzibar, huduma Zanzibar, JTL, Tanzania">
 <meta name="author" content="Afan JTL Zanzibar">
 <meta name="theme-color" content="#123b5d">
-    <meta property="og:image"
-content="https://drive.google.com/uc?export=view&id=18DdOr3dL8hwD_m5IIa2483zVXJIS3bjl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AFAN JTL ZANZIBAR">
+<meta property="og:description" content="Karibu AFAN JTL ZANZIBAR">
+<meta property="og:image" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
+<meta property="og:url" content="https://jeithirdtrade.github.io/JTL/">
+<meta name="twitter:card" content="summary_large_image">
 <title>Afan JTL Zanzibar | Biashara & Ushirikiano</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
