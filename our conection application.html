@@ -1,23 +1,25 @@
 <html lang="sw">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta property="og:type" content="website">
 <meta property="og:title" content="AFAN JTL ZANZIBAR">
 <meta property="og:description" content="Karibu AFAN JTL ZANZIBAR">
 <meta property="og:image" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
 <meta property="og:url" content="https://jeithirdtrade.github.io/JTL/">
+<meta property="og:image:secure_url" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
+
 <meta name="twitter:card" content="summary_large_image">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="twitter:title" content="AFAN JTL ZANZIBAR">
+<meta name="twitter:description" content="Karibu AFAN JTL ZANZIBAR">
+<meta name="twitter:image" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
+
 <meta name="description" content="Afan - Tawi la JTL Zanzibar. Kampuni ya biashara na huduma mbalimbali Zanzibar. Ubora, uaminifu na ufanisi.">
 <meta name="keywords" content="Afan, Afan JTL Zanzibar, biashara Zanzibar, huduma Zanzibar, JTL, Tanzania">
 <meta name="author" content="Afan JTL Zanzibar">
 <meta name="theme-color" content="#123b5d">
-<meta property="og:type" content="website">
-<meta property="og:title" content="AFAN JTL ZANZIBAR">
-<meta property="og:description" content="Karibu AFAN JTL ZANZIBAR">
-<meta property="og:image" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
-<meta property="og:url" content="https://jeithirdtrade.github.io/JTL/">
-<meta name="twitter:card" content="summary_large_image">
+
 <title>Afan JTL Zanzibar | Biashara & Ushirikiano</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
