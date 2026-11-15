@@ -1,5 +1,11 @@
 <html lang="sw">
 <head>
+<meta property="og:type" content="website">
+<meta property="og:title" content="AFAN JTL ZANZIBAR">
+<meta property="og:description" content="Karibu AFAN JTL ZANZIBAR">
+<meta property="og:image" content="https://jeithirdtrade.github.io/JTL/preview.jpg">
+<meta property="og:url" content="https://jeithirdtrade.github.io/JTL/">
+<meta name="twitter:card" content="summary_large_image">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Afan - Tawi la JTL Zanzibar. Kampuni ya biashara na huduma mbalimbali Zanzibar. Ubora, uaminifu na ufanisi.">
