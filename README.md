@@ -393,7 +393,7 @@ footer { background: var(--dark); color: rgba(255,255,255,0.65); padding: 65px 0
 .footer-bottom .highlight { color: var(--yellow); font-weight: 800; }
 
 /* ===== FLOATING ACTIONS ===== */
-.floating-actions { position: fixed; right: 20px; bottom: 22px; display: flex; flex-direction: column; gap: 12px; z-index: 9998; }
+.floating-actions { position: fixed; right: 20px; bottom: 22px; display: flex; flex-direction: column; gap: 12px; z-index: 9998; transition: bottom 0.35s ease; }
 .fab-wa, .fab-top {
     width: 56px; height: 56px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -412,6 +412,215 @@ footer { background: var(--dark); color: rgba(255,255,255,0.65); padding: 65px 0
 .fab-tooltip { position: absolute; right: 70px; top: 50%; transform: translateY(-50%); background: var(--dark); color: white; padding: 8px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; }
 .fab-tooltip::after { content: ""; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-left-color: var(--dark); }
 .fab-wa:hover .fab-tooltip { opacity: 1; }
+
+/* ===== FIXED BANNER AD — full media + contact options ===== */
+.fixed-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 9997;
+    height: 110px;
+    display: block;
+    overflow: hidden;
+    background: #0b1a2a;
+    color: white;
+    border-top: 3px solid var(--yellow);
+    box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.35);
+    transform: translateY(0); opacity: 1;
+    transition: transform 0.45s ease, opacity 0.45s ease;
+    cursor: pointer;
+}
+.fixed-banner.hide { transform: translateY(130%); opacity: 0; pointer-events: none; }
+
+/* Full-bleed media behind the whole banner */
+.fixed-banner-media {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0; border-radius: 0;
+    overflow: hidden;
+    background: #0b1a2a;
+    display: block;
+}
+.fixed-banner-media img,
+.fixed-banner-media video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+.fixed-banner:hover .fixed-banner-media img,
+.fixed-banner:hover .fixed-banner-media video { transform: scale(1.04); }
+.fixed-banner-fallback {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.45); font-size: 2rem;
+    background: linear-gradient(120deg, #123b5d 0%, #743b91 100%);
+}
+.fixed-banner-play {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.22); color: white; pointer-events: none;
+}
+.fixed-banner-play i {
+    width: 44px; height: 44px; padding-left: 3px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 1rem;
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+/* Dark gradient overlay so text stays readable — lighter for clearer media */
+.fixed-banner-overlay {
+    position: absolute; inset: 0; z-index: 3;
+    background: linear-gradient(90deg, rgba(8,12,20,0.42) 0%, rgba(8,12,20,0.22) 45%, rgba(8,12,20,0.08) 100%);
+    pointer-events: none;
+}
+
+.fixed-banner-content {
+    position: relative; z-index: 4;
+    height: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 12px 56px 12px 18px;
+    pointer-events: none;
+}
+.fixed-banner-text { flex: 1 1 auto; min-width: 0; max-width: 640px; }
+.fixed-banner-title {
+    display: block; font-size: 0.98rem; font-weight: 800; letter-spacing: 0.2px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.5);
+}
+.fixed-banner-desc {
+    display: block; font-size: 0.8rem; font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.55), 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.fixed-banner-btn {
+    pointer-events: none;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 22px; border-radius: 50px;
+    background: var(--yellow); color: var(--dark);
+    font-size: 0.85rem; font-weight: 800; white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(241,196,15,0.35);
+    flex-shrink: 0;
+}
+
+.fixed-banner-close {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    z-index: 6;
+    width: 34px; height: 34px; border-radius: 50%; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.18); color: white; font-size: 0.9rem;
+    transition: var(--transition);
+    pointer-events: auto;
+}
+.fixed-banner-close:hover { background: var(--red); transform: translateY(-50%) rotate(90deg); }
+
+/* Layout shift helpers when the banner is visible */
+body.has-banner footer { padding-bottom: 140px; }
+body.has-banner .floating-actions { bottom: 126px; }
+body.has-banner .toast { bottom: 130px; }
+
+/* ===== BANNER CONTACT OPTIONS MODAL ===== */
+.banner-contact-modal {
+    position: fixed; inset: 0; z-index: 100010;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding: 16px;
+    background: rgba(8, 12, 20, 0.72);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.banner-contact-modal.show { opacity: 1; visibility: visible; }
+.banner-contact-sheet {
+    width: min(420px, 100%);
+    background: white;
+    border-radius: 22px 22px 18px 18px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.35);
+    transform: translateY(30px);
+    transition: transform 0.35s ease;
+    overflow: hidden;
+}
+.banner-contact-modal.show .banner-contact-sheet { transform: translateY(0); }
+.banner-contact-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px 12px;
+    border-bottom: 1px solid var(--border);
+}
+.banner-contact-header h3 {
+    font-size: 1.05rem; font-weight: 900; color: var(--dark); margin: 0;
+}
+.banner-contact-close {
+    width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--light); color: var(--dark); font-size: 0.95rem;
+    transition: var(--transition);
+}
+.banner-contact-close:hover { background: var(--red); color: white; }
+.banner-contact-list {
+    list-style: none; margin: 0; padding: 10px 12px 18px;
+    display: flex; flex-direction: column; gap: 8px;
+}
+.banner-contact-list a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--light);
+    color: var(--dark);
+    font-weight: 700; font-size: 0.95rem;
+    transition: var(--transition);
+}
+.banner-contact-list a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+.banner-contact-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.15rem; flex-shrink: 0;
+}
+.banner-contact-icon.call { background: #2563eb; }
+.banner-contact-icon.whatsapp { background: #25d366; }
+.banner-contact-icon.facebook { background: #1877f2; }
+.banner-contact-icon.instagram { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
+.banner-contact-icon.message { background: var(--purple); }
+.banner-contact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.banner-contact-meta small {
+    font-size: 0.75rem; font-weight: 600; color: var(--gray);
+}
+/* ===== MEDIA LIGHTBOX (video preview) ===== */
+.media-lightbox {
+    position: fixed; inset: 0; z-index: 100005;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: rgba(8, 12, 20, 0.88);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.media-lightbox.show { opacity: 1; visibility: visible; }
+.media-lightbox-inner {
+    position: relative;
+    width: min(960px, 100%);
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    transform: scale(0.94);
+    transition: transform 0.35s ease;
+}
+.media-lightbox.show .media-lightbox-inner { transform: scale(1); }
+.media-lightbox-frame { width: 100%; height: 100%; }
+.media-lightbox-frame iframe,
+.media-lightbox-frame video { width: 100%; height: 100%; border: 0; display: block; }
+.media-lightbox-close {
+    position: absolute; top: 12px; right: 12px; z-index: 2;
+    width: 42px; height: 42px; border-radius: 50%; border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.16); color: white; font-size: 1rem;
+    transition: var(--transition);
+}
+.media-lightbox-close:hover { background: var(--red); transform: rotate(90deg); }
 
 /* ===== TOAST ===== */
 .toast { position: fixed; left: 50%; bottom: 25px; transform: translate(-50%, 120px); opacity: 0; z-index: 10000; padding: 14px 22px; border-radius: 12px; background: var(--dark); color: white; box-shadow: var(--shadow-lg); border-left: 4px solid var(--green); transition: 0.4s ease; max-width: calc(100% - 40px); text-align: center; font-size: 0.85rem; pointer-events: none; }
@@ -460,6 +669,7 @@ footer { background: var(--dark); color: rgba(255,255,255,0.65); padding: 65px 0
     .section-heading { margin-bottom: 42px; }
     .trust-logos { gap: 30px; }
     .books-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    body.has-banner footer { padding-bottom: 140px; }
 }
 @media (max-width: 768px) {
     :root { --gutter: 20px; --header-h: 68px; }
@@ -513,6 +723,24 @@ footer { background: var(--dark); color: rgba(255,255,255,0.65); padding: 65px 0
     .trust-logo i { font-size: 1.2rem; }
     .floating-actions { right: 14px; bottom: 16px; gap: 10px; }
     .fab-wa, .fab-top { width: 50px; height: 50px; font-size: 1.3rem; }
+
+    .fixed-banner { height: 120px; }
+    .fixed-banner-content {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 50px 12px 14px;
+    }
+    .fixed-banner-title { font-size: 0.88rem; }
+    .fixed-banner-desc  { font-size: 0.74rem; }
+    .fixed-banner-btn   { padding: 9px 16px; font-size: 0.78rem; }
+    .fixed-banner-overlay {
+        background: linear-gradient(180deg, rgba(8,12,20,0.28) 0%, rgba(8,12,20,0.45) 100%);
+    }
+    body.has-banner footer { padding-bottom: 150px; }
+    body.has-banner .floating-actions { bottom: 138px; }
+    body.has-banner .toast { bottom: 142px; }
 }
 @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; gap: 0; } .hero-card img { height: 250px; min-height: 200px; } .about-image img { height: 250px; } .social-links a, .footer-social a { width: 38px; height: 38px; } .books-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
 @media (max-width: 400px) {
@@ -1008,6 +1236,107 @@ footer { background: var(--dark); color: rgba(255,255,255,0.65); padding: 65px 0
     </div>
 </footer>
 
+<!-- FIXED BANNER AD — full media; click opens contact options -->
+<div class="fixed-banner" id="fixedBanner" role="complementary" aria-label="Tangazo" tabindex="0">
+
+    <!-- Full-bleed picture / video fills the whole banner -->
+    <div class="fixed-banner-media" id="bannerMedia" aria-hidden="true">
+        <i class="fab fa-google-drive fixed-banner-fallback" aria-hidden="true"></i>
+        <img id="bannerThumb"
+             src="https://drive.google.com/thumbnail?id=11iv8L_k-BFOyOpQzsPEfDDrlur55khOV&sz=w800"
+             alt="" loading="lazy"
+             onerror="this.style.display='none'">
+        <span class="fixed-banner-play" id="bannerPlay" hidden>
+            <i class="fas fa-play" aria-hidden="true"></i>
+        </span>
+    </div>
+
+    <div class="fixed-banner-overlay" aria-hidden="true"></div>
+
+    <div class="fixed-banner-content">
+        <div class="fixed-banner-text">
+            <span class="fixed-banner-title" data-i18n="banner_title">Nyenzo Mpya Yameongezwa!</span>
+            <span class="fixed-banner-desc" data-i18n="banner_desc">Bofya hapa kuwasiliana nasi — WhatsApp, simu, Facebook, Instagram au ujumbe.</span>
+        </div>
+        <span class="fixed-banner-btn" id="bannerCta">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            <span data-i18n="banner_btn">Wasiliana</span>
+        </span>
+    </div>
+
+    <button class="fixed-banner-close" id="fixedBannerClose" type="button" aria-label="Funga tangazo">
+        <i class="fas fa-xmark" aria-hidden="true"></i>
+    </button>
+</div>
+
+<!-- BANNER CONTACT OPTIONS -->
+<div class="banner-contact-modal" id="bannerContactModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bannerContactTitle">
+    <div class="banner-contact-sheet">
+        <div class="banner-contact-header">
+            <h3 id="bannerContactTitle" data-i18n="banner_contact_title">Chagua njia ya mawasiliano</h3>
+            <button class="banner-contact-close" id="bannerContactClose" type="button" aria-label="Funga">
+                <i class="fas fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <ul class="banner-contact-list">
+            <li>
+                <a href="tel:+255776290901" id="bannerContactCall">
+                    <span class="banner-contact-icon call"><i class="fas fa-phone"></i></span>
+                    <span class="banner-contact-meta">
+                        <span data-i18n="banner_opt_call">Piga simu</span>
+                        <small>+255 776 290 901</small>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="https://wa.me/255776290901" target="_blank" rel="noopener noreferrer" id="bannerContactWhatsApp">
+                    <span class="banner-contact-icon whatsapp"><i class="fab fa-whatsapp"></i></span>
+                    <span class="banner-contact-meta">
+                        <span data-i18n="banner_opt_whatsapp">WhatsApp</span>
+                        <small data-i18n="banner_opt_whatsapp_sub">Tuma ujumbe haraka</small>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" id="bannerContactFacebook">
+                    <span class="banner-contact-icon facebook"><i class="fab fa-facebook-f"></i></span>
+                    <span class="banner-contact-meta">
+                        <span data-i18n="banner_opt_facebook">Facebook</span>
+                        <small data-i18n="banner_opt_facebook_sub">Tufuate au utume ujumbe</small>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" id="bannerContactInstagram">
+                    <span class="banner-contact-icon instagram"><i class="fab fa-instagram"></i></span>
+                    <span class="banner-contact-meta">
+                        <span data-i18n="banner_opt_instagram">Instagram</span>
+                        <small data-i18n="banner_opt_instagram_sub">Tufuate kwenye Instagram</small>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="mailto:jeithirdtrade@gmail.com" id="bannerContactMessage">
+                    <span class="banner-contact-icon message"><i class="fas fa-envelope"></i></span>
+                    <span class="banner-contact-meta">
+                        <span data-i18n="banner_opt_message">Tuma ujumbe (Email)</span>
+                        <small>jeithirdtrade@gmail.com</small>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- MEDIA LIGHTBOX (optional video preview) -->
+<div class="media-lightbox" id="mediaLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Video">
+    <div class="media-lightbox-inner">
+        <button class="media-lightbox-close" id="mediaLightboxClose" type="button" aria-label="Funga">
+            <i class="fas fa-xmark" aria-hidden="true"></i>
+        </button>
+        <div class="media-lightbox-frame" id="mediaLightboxFrame"></div>
+    </div>
+</div>
 <!-- FLOATING ACTIONS -->
 <div class="floating-actions">
     <a href="https://wa.me/255776290901" class="fab-wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
@@ -1075,6 +1404,18 @@ const translations = {
         f_msg: 'Ujumbe Wako', f_msg_ph: 'Andika ujumbe wako hapa...', f_submit: 'Tuma Ujumbe',
         loc1: 'Zanzibar, Tanzania', loc2: 'Jumatatu - Jumamosi: 8:00 - 18:00',
         whatsapp_tip: 'Piga Gumzo WhatsApp',
+        banner_title: 'Sabuni ya papai ya Afan!',
+        banner_desc: 'Bofya hapa kuwasiliana nasi — WhatsApp, simu, Facebook, Instagram au ujumbe.',
+        banner_btn: 'Wasiliana',
+        banner_contact_title: 'Chagua njia ya mawasiliano',
+        banner_opt_call: 'Piga simu',
+        banner_opt_whatsapp: 'WhatsApp',
+        banner_opt_whatsapp_sub: 'Tuma ujumbe haraka',
+        banner_opt_facebook: 'Facebook',
+        banner_opt_facebook_sub: 'Tufuate au utume ujumbe',
+        banner_opt_instagram: 'Instagram',
+        banner_opt_instagram_sub: 'Tufuate kwenye Instagram',
+        banner_opt_message: 'Tuma ujumbe (Email)',
         toast_success: 'Asante! Ujumbe wako umetumwa kwa mafanikio.', toast_error: 'Tafadhali jaza sehemu zote zinazohitajika.',
         footer_desc: 'Afan ni tawi la JTL Zanzibar. Kampuni ya biashara na huduma mbalimbali Zanzibar. Tunatoa ubora, uaminifu na ufanisi katika kila tunachofanya.',
         footer_col1: 'Viungo vya Haraka', footer_col2: 'Tufuate', footer_drive: 'Hifadhi ya Nyenzo',
@@ -1131,6 +1472,18 @@ const translations = {
         f_msg: 'Your Message', f_msg_ph: 'Write your message here...', f_submit: 'Send Message',
         loc1: 'Zanzibar, Tanzania', loc2: 'Monday - Saturday: 8:00 - 18:00',
         whatsapp_tip: 'Chat on WhatsApp',
+        banner_title: 'Afan papayas soap!',
+        banner_desc: 'Tap here to contact us WhatsApp, call, Facebook, Instagram or message.',
+        banner_btn: 'Contact',
+        banner_contact_title: 'Choose how to contact us',
+        banner_opt_call: 'Call',
+        banner_opt_whatsapp: 'WhatsApp',
+        banner_opt_whatsapp_sub: 'Send a quick message',
+        banner_opt_facebook: 'Facebook',
+        banner_opt_facebook_sub: 'Follow or message us',
+        banner_opt_instagram: 'Instagram',
+        banner_opt_instagram_sub: 'Follow us on Instagram',
+        banner_opt_message: 'Send a message (Email)',
         toast_success: 'Thank you! Your message has been sent successfully.', toast_error: 'Please fill in all required fields.',
         footer_desc: 'Afan is a branch of JTL Zanzibar. A company for various businesses and services in Zanzibar. We deliver quality, trust and efficiency in everything we do.',
         footer_col1: 'Quick Links', footer_col2: 'Follow Us', footer_drive: 'Resource Drive',
@@ -1180,6 +1533,176 @@ function applyLanguage(lang) {
 
 langToggle.addEventListener('click', () => applyLanguage(currentLang === 'sw' ? 'en' : 'sw'));
 
+/* ================================================================
+   FIXED BANNER AD — full media; click opens contact options
+   ----------------------------------------------------------------
+   type: 'image'  → banner is filled with the picture
+   type: 'video'  → banner is filled with a video (muted loop) or
+                    a thumbnail + play icon
+   thumbnail / videoUrl / videoId control what is shown.
+   Clicking ANYWHERE on the banner (except close) opens contact options.
+   ================================================================ */
+const bannerAdConfig = {
+    type: 'image', // ← 'image'  or  'video'
+
+    // Picture that fills the whole banner (Drive thumbnails work for public files)
+    thumbnail: 'https://drive.google.com/thumbnail?id=11iv8L_k-BFOyOpQzsPEfDDrlur55khOV&sz=w800',
+
+    // Only used when type === 'video'
+    videoId:  '',   // e.g. 'dQw4w9WgXcQ' (YouTube) — shows play icon; contact still opens on click
+    videoUrl: ''    // e.g. 'https://example.com/clip.mp4' — muted loop inside the banner
+};
+
+const fixedBanner      = document.getElementById('fixedBanner');
+const fixedBannerClose = document.getElementById('fixedBannerClose');
+const bannerMedia      = document.getElementById('bannerMedia');
+const bannerThumb      = document.getElementById('bannerThumb');
+const bannerPlay       = document.getElementById('bannerPlay');
+
+const bannerContactModal = document.getElementById('bannerContactModal');
+const bannerContactClose = document.getElementById('bannerContactClose');
+let contactModalOpen = false;
+
+function openBannerContact() {
+    if (!bannerContactModal) return;
+    bannerContactModal.classList.add('show');
+    bannerContactModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    contactModalOpen = true;
+}
+
+function closeBannerContact() {
+    if (!bannerContactModal) return;
+    bannerContactModal.classList.remove('show');
+    bannerContactModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    contactModalOpen = false;
+}
+
+/* --- Apply media to fill the whole banner --- */
+if (fixedBanner && bannerMedia) {
+    if (bannerAdConfig.type === 'video' && bannerAdConfig.videoUrl) {
+        // Inline muted looping video fills the banner
+        if (bannerThumb) bannerThumb.style.display = 'none';
+        const v = document.createElement('video');
+        v.src = bannerAdConfig.videoUrl;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.autoplay = true;
+        v.setAttribute('playsinline', '');
+        bannerMedia.appendChild(v);
+        v.play().catch(() => {});
+        if (bannerPlay) bannerPlay.hidden = true;
+    } else {
+        if (bannerAdConfig.thumbnail && bannerThumb) {
+            bannerThumb.src = bannerAdConfig.thumbnail;
+        }
+        if (bannerAdConfig.type === 'video' && bannerPlay) {
+            bannerPlay.hidden = false;
+        }
+    }
+
+    // Whole banner click → contact options (except the close button)
+    fixedBanner.addEventListener('click', (e) => {
+        if (e.target.closest('#fixedBannerClose')) return;
+        openBannerContact();
+    });
+    fixedBanner.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openBannerContact();
+        }
+    });
+}
+
+/* --- Contact modal events --- */
+if (bannerContactModal) {
+    if (bannerContactClose) bannerContactClose.addEventListener('click', closeBannerContact);
+    bannerContactModal.addEventListener('click', (e) => {
+        if (e.target === bannerContactModal) closeBannerContact();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactModalOpen) closeBannerContact();
+    });
+}
+
+/* --- Optional video lightbox (kept for future use) --- */
+const mediaLightbox      = document.getElementById('mediaLightbox');
+const mediaLightboxFrame = document.getElementById('mediaLightboxFrame');
+const mediaLightboxClose = document.getElementById('mediaLightboxClose');
+let lightboxOpen = false;
+
+function openVideoLightbox(src) {
+    if (!mediaLightbox) return;
+    mediaLightboxFrame.innerHTML = '';
+    const isFile = /\.(mp4|webm|ogg|m4v)(\?|$)/i.test(src);
+    if (isFile) {
+        const v = document.createElement('video');
+        v.src = src;
+        v.controls = true;
+        v.autoplay = true;
+        v.playsInline = true;
+        mediaLightboxFrame.appendChild(v);
+    } else {
+        const f = document.createElement('iframe');
+        f.src = src;
+        f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        f.setAttribute('allowfullscreen', '');
+        mediaLightboxFrame.appendChild(f);
+    }
+    mediaLightbox.classList.add('show');
+    mediaLightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lightboxOpen = true;
+}
+
+function closeVideoLightbox() {
+    if (!mediaLightbox) return;
+    mediaLightbox.classList.remove('show');
+    mediaLightbox.setAttribute('aria-hidden', 'true');
+    mediaLightboxFrame.innerHTML = '';
+    document.body.style.overflow = '';
+    lightboxOpen = false;
+}
+
+if (mediaLightbox) {
+    mediaLightboxClose.addEventListener('click', closeVideoLightbox);
+    mediaLightbox.addEventListener('click', e => {
+        if (e.target === mediaLightbox) closeVideoLightbox();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightboxOpen) closeVideoLightbox();
+    });
+}
+
+/* --- Show / hide banner — × hides for 1 minute, then reappears --- */
+let bannerHideTimer = null;
+
+function showFixedBanner() {
+    if (!fixedBanner) return;
+    fixedBanner.classList.remove('hide');
+    document.body.classList.add('has-banner');
+}
+
+function hideFixedBannerTemporarily() {
+    if (!fixedBanner) return;
+    fixedBanner.classList.add('hide');
+    document.body.classList.remove('has-banner');
+    if (bannerHideTimer) clearTimeout(bannerHideTimer);
+    bannerHideTimer = setTimeout(() => {
+        showFixedBanner();
+        bannerHideTimer = null;
+    }, 60000); // 1 minute
+}
+
+if (fixedBanner) {
+    document.body.classList.add('has-banner');
+    fixedBannerClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideFixedBannerTemporarily();
+    });
+}
 /* ========== MOBILE MENU ========== */
 const menuToggle = document.getElementById('menuToggle');
 const navLinks   = document.getElementById('navLinks');
